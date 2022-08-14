@@ -211,9 +211,27 @@ class Game extends React.Component {
                 body: JSON.stringify({"team": { "id": this.state.selectedTeam.id, "name":this.state.selectedTeam.name }, "fixtureId":this.state.selectedFixture.id, "players": this.state.selectedPlayers})
             };
             fetch('/predictions', requestOptions)
-                .then(response => response.json())
-                .then(data => this.setState({ postId: data.id }));
+                .then(data => this.setState({
+                                                        competition: "PL",
+                                                        teams: [],
+                                                        selectedTeam: null,
+                                                        availablePlayers: this.props.players,
+                                                        selectedPlayers: [],
+                                                        fixtures: [],
+                                                        selectedFixture: null
+                                                    }));
     }
+
+        setLineup = ()=> {
+            console.log(this.state);
+              const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ "teamId": this.state.selectedTeam.id ,"fixtureId":this.state.selectedFixture.id, "lineup": this.state.selectedPlayers})
+                };
+                fetch('/lineup', requestOptions)
+                   ;
+        }
   render() {
     return (
         <div>
@@ -222,6 +240,7 @@ class Game extends React.Component {
             <PlayerList head="Available Players" players={this.state.availablePlayers} onPlayerClick={this.addToSelectedSquad} />
             <PlayerList head="Selected Players" players={this.state.selectedPlayers} onPlayerClick={this.removeFromSelectedSquad} />
             <button onClick={this.savePrediction}>Save Selection</button>
+            <button onClick={this.setLineup}>Set Lineup</button>
         </div>
     );
   }

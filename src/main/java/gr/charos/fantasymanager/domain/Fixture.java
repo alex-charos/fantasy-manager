@@ -1,5 +1,7 @@
 package gr.charos.fantasymanager.domain;
 
-public interface Fixture {
+import java.time.LocalDateTime;
+
+public record Fixture(String id, LocalDateTime date, Team homeTeam, Team awayTeam) {
 
 }
