@@ -55,15 +55,24 @@ public class SquadPredictionRESTService {
     return SquadPredictionEntity.findByPredictorId(userInfo.getString("email")).stream().map(SquadPredictionDTO::from).collect(Collectors.toList());
 
   }
-
-
-
   @GET
   @Path("/all")
   public List<SquadPredictionEntity> getAllPredictions() {
     return SquadPredictionEntity.listAll();
   }
 
+
+  @GET
+  @Path("/fixture/{fixtureId}/team/{teamId}")
+  public SquadPredictionDTO getAllPredictions(@PathParam("fixtureId") String fixtureId, @PathParam("teamId") String teamId) {
+    SquadPredictionEntity spe = SquadPredictionEntity.findByPredictorAndFixtureIdAndTeam(userInfo.getString("email"), fixtureId, teamId);
+    if (spe != null) {
+      return SquadPredictionDTO.from(spe);
+    } else {
+      throw new NotFoundException();
+    }
+
+  }
 
 
 

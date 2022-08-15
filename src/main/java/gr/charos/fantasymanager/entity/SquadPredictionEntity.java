@@ -61,6 +61,14 @@ public class SquadPredictionEntity extends PanacheMongoEntity {
     return list(doc);
   }
 
+  public static SquadPredictionEntity  findByPredictorAndFixtureIdAndTeam(String predictorId,String fixtureId, String teamId) {
+    Document doc = new Document();
+    doc.put("team.id" , teamId);
+    doc.put("fixtureId", fixtureId);
+    doc.put("predictor.id", predictorId);
+    return find(doc).firstResult();
+  }
+
   public static void deleteByPredictorAndFixtureIdAndTeam(String predictorId,String fixtureId, String teamId) {
     Document doc = new Document();
     doc.put("team.id" , teamId);

@@ -259,13 +259,28 @@ class Game extends React.Component {
       }
 
     selectFixture = (fixture) => {
-        this.setState({selectedTeam:this.state.selectedTeam,
-                    availablePlayers:this.state.availablePlayers,
-                    selectedPlayers:this.state.selectedPlayers,
-                    teams: this.state.teams,
-                    fixtures: this.state.fixtures,
-                    selectedFixture: fixture
-                    });
+        //clean up selection
+        this.state.selectedPlayers.forEach(p=>  this.removeFromSelectedSquad(p));
+
+        fetch("/predictions/fixture/" + fixture.id+ "/team/" + this.state.selectedTeam.id)
+            .then((value) => value.json())
+            .then(
+                (result) => {
+                            result.players.forEach(p => this.addToSelectedSquad(p));
+
+                     },
+                     (error) => {
+                               this.setState({selectedTeam:this.state.selectedTeam,
+                                           availablePlayers:this.state.availablePlayers,
+                                           selectedPlayers:[],
+                                           teams: this.state.teams,
+                                           fixtures: this.state.fixtures,
+                                           selectedFixture: fixture
+                                           });
+                     }
+                   )
+                               ;
+
     }
 
     selectTeam = (team) => {
@@ -323,7 +338,7 @@ class Game extends React.Component {
                 return;
 
             }
-            const arr = this.state.availablePlayers.filter(player => player !== p);
+            const arr = this.state.availablePlayers.filter(player => player.id !== p.id);
             const joined = this.state.selectedPlayers.concat(p);
 
 
@@ -341,7 +356,7 @@ class Game extends React.Component {
     }
     removeFromSelectedSquad = (p) => {
 
-        const arr = this.state.selectedPlayers.filter(player => player !== p);
+        const arr = this.state.selectedPlayers.filter(player => player.id !== p.id);
         const joined = this.state.availablePlayers.concat(p);
 
         let state = this.state;
