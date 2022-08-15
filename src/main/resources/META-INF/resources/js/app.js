@@ -1,12 +1,3 @@
-class Square extends React.Component {
-  render() {
-    return (
-      <button className="square">
-        {this.props.value}
-      </button>
-    );
-  }
-}
 class PlayerList extends React.Component {
 
     render() {
@@ -51,6 +42,7 @@ class Player extends React.Component {
     }
 
 }
+
 class Team extends React.Component {
     render() {
         return (<div >
@@ -248,5 +240,3 @@ class Game extends React.Component {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Game />);
-//<PlayerList head="Total Squad" players= {this.state.availablePlayers} onPlayerClick={this.addToSelectedSquad}  />
-          //    <PlayerList head="Selected"  players= {this.state.selectedPlayers} onPlayerClick={this.removeFromSelectedSquad}  />

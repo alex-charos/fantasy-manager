@@ -41,7 +41,7 @@ public class SquadPredictionRESTService {
 
     SquadPredictionEntity spe =  new SquadPredictionEntity();
     spe.team  = dto.team;
-    spe.predictor = new Predictor(String.valueOf(userInfo.get("email")), String.valueOf(userInfo.get("name"))); // get name from oidc
+    spe.predictor = new Predictor(userInfo.getString("email"), userInfo.getString("name"));
     spe.fixtureId = dto.fixtureId;
     spe.players = dto.players;
     spe.predictionDate = LocalDateTime.now();
@@ -52,7 +52,7 @@ public class SquadPredictionRESTService {
 
   @GET
   public List<SquadPredictionDTO> getPredictions(){
-    return SquadPredictionEntity.findByPredictorId(userInfo.get("email").toString()).stream().map(SquadPredictionDTO::from).collect(Collectors.toList());
+    return SquadPredictionEntity.findByPredictorId(userInfo.getString("email")).stream().map(SquadPredictionDTO::from).collect(Collectors.toList());
 
   }
 

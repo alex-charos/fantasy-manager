@@ -21,7 +21,7 @@ public class PredictionResultsRESTService {
   @GET
   public List<PredictionResult> getPredictionResults() {
 
-    return PredictionResultEntity.findByPredictor(userInfo.get("email").toString()).stream().map(PredictionResultEntity::toPredictionResult).collect(Collectors.toList());
+    return PredictionResultEntity.findByPredictor(userInfo.getString("email")).stream().map(PredictionResultEntity::toPredictionResult).collect(Collectors.toList());
 
   }
 }
