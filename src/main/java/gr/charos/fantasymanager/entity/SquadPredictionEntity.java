@@ -13,7 +13,6 @@ import java.util.List;
 @MongoEntity
 public class SquadPredictionEntity extends PanacheMongoEntity {
 
-
   public Predictor predictor;
   public String fixtureId;
   public Team team;
