@@ -37,10 +37,10 @@ class PlayerList extends React.Component {
     render() {
         if (this.props.players) {
             return (
-                <div>
-                    <div> {this.props.head} </div>
-                    <div className = "grid grid-cols-4 gap-4">
-                        <div className = "column-1">
+                <div >
+                    <div className="text-center font-mono"> {this.props.head} </div>
+                    <div className = "grid grid-cols-4 gap-4 divide-x-2 ">
+                        <div className = "column-1  ">
                            <PlayerGroup players={this.state.goalkeepers} group="Goalkeepers" onPlayerClick={this.props.onPlayerClick} />
                         </div>
                         <div className = "column-1">
@@ -86,51 +86,41 @@ class StartingSquad extends React.Component {
                     midfielders = this.props.players.filter(p => {return p.position === "MIDFIELDER"});
                     attackers = this.props.players.filter(p => {return p.position === "ATTACKER"});
                 }
-                let goalkeeperColumns = "grid grid-cols-" + goalkeepers.length;
-                let defendersColumns = "grid grid-cols-" + defenders.length;
-                let midfieldersColumns = "grid grid-cols-" + midfielders.length;
-                let attackersColumns = "grid grid-cols-" + attackers.length;
 
-
-                this.setState({
+                 this.setState({
                     goalkeepers: goalkeepers,
                     defenders: defenders,
                     midfielders: midfielders,
-                    attackers: attackers,
-                    defendersColumns: defendersColumns,
-                    midfieldersColumns: midfieldersColumns,
-                    attackersColumns: attackersColumns,
-                    goalkeeperColumns: goalkeeperColumns
+                    attackers: attackers
                 });
             }
         }
 
     render() {
-      if (this.props.players) {
+      if (this.props.players && this.props.players.length >0) {
                 return (
                     <div>
-                        <div> Starting 11  </div>
+                        <div className="text-center"> Starting 11  </div>
                         <div className = "grid grid-rows-4 gap-4">
-                             <div className = {this.state.goalkeeperColumns}>
+                             <div className = "flex  place-content-center">
                                 { this.state.goalkeepers.map((p)=>(
-                                    <Player key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
+                                    <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                  )) }
                             </div>
-                            <div className = {this.state.defendersColumns}>
+                            <div className = "flex  justify-between">
                                  { this.state.defenders.map((p)=>(
-                                                        <Player key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
-
-                                                     )) }
+                                    <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
+                                    )) }
                             </div>
-                            <div className = {this.state.midfieldersColumns}>
+                            <div className = "flex  place-content-center">
                                  { this.state.midfielders.map((p)=>(
-                                    <Player key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
+                                    <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                   )) }
                             </div>
-                            <div className = {this.state.attackersColumns}>
+                            <div className = "flex  place-content-center">
                                  { this.state.attackers.map((p)=>(
-                                    <Player key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
-                                    )) }
+                                    <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
+                                   )) }
                             </div>
                         </div>
                     </div>
@@ -145,30 +135,37 @@ class PlayerGroup extends React.Component {
 
     render() {
      return (
-                <div>
-                    <div> {this.props.group} </div>
+                <div className= "divide-y-2">
+                    <div className="font-mono"> {this.props.group} </div>
+                    <div>
                     { this.props.players.map((p)=>(
                         <Player key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
 
                      )) }
+                     </div>
                 </div>
                 );
 
     }
 
 }
+class PlayerAvatar extends React.Component {
+    render() {
+        return (<div  className="rounded-full border-2 border-white-100 flex place-content-center" key={this.props.player.id} onClick={()=>this.props.onPlayerClick(this.props.player)} >
+                  <div className=" rounded-full flex justify-center items-center text-sm">  {this.props.player.name} </div>
+                  <div className="w-6 h-6 bg-red-600 text-lg place-content-center rounded-full border-2 border-white-100 text-center"> - </div>
 
+                </div>);
+        }
+}
 
 
 class Player extends React.Component {
-
     render() {
         return (<div key={this.props.player.id} onClick={()=>this.props.onPlayerClick(this.props.player)} >
                                         {this.props.player.name}
                                      </div>);
-
-    }
-
+        }
 }
 
 class Team extends React.Component {
@@ -382,8 +379,13 @@ class Game extends React.Component {
                 <FixturesList fixtures={this.state.fixtures} onFixtureSelect={this.selectFixture} />
             </div>
             <div className ="columns-2">
-                <PlayerList head="Available Players" players={this.state.availablePlayers} onPlayerClick={this.addToSelectedSquad} />
-                <StartingSquad  players={this.state.selectedPlayers} onPlayerClick={this.removeFromSelectedSquad} />
+                <div class=" bg-gradient-to-r from-sky-500 to-indigo-500 ">
+                    <PlayerList head="Available Players" players={this.state.availablePlayers} onPlayerClick={this.addToSelectedSquad} />
+
+                </div>
+                <div class="shadow-2xl bg-white rounded-lg bg-green-600">
+                    <StartingSquad  players={this.state.selectedPlayers} onPlayerClick={this.removeFromSelectedSquad} />
+                </div>
             </div>
             <button onClick={this.savePrediction}>Save Selection</button>
             <button onClick={this.setLineup}>Set Lineup</button>
