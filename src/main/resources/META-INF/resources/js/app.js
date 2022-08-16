@@ -297,7 +297,7 @@ class Game extends React.Component {
                             selectedPlayers:[],
                             selectedFixture: null,
                             teams: this.state.teams,
-                            fixtures: fixtures.matches
+                            fixtures: fixtures
                             });
 
 

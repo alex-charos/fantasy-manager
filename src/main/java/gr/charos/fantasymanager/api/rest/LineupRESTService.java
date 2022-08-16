@@ -4,8 +4,7 @@ package gr.charos.fantasymanager.api.rest;
 import gr.charos.fantasymanager.api.rest.dto.LineupDTO;
 import gr.charos.fantasymanager.domain.Fixture;
 import gr.charos.fantasymanager.domain.Team;
-import gr.charos.fantasymanager.gateway.MatchGateway;
-import gr.charos.fantasymanager.gateway.dto.MatchDTO;
+import gr.charos.fantasymanager.gateway.FixtureGateway;
 import gr.charos.fantasymanager.service.LineupService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -18,7 +17,7 @@ public class LineupRESTService {
 
 
   @RestClient
-  MatchGateway matchGateway;
+  FixtureGateway fixtureGateway;
 
   @Inject
   LineupService lineupService;
@@ -26,17 +25,16 @@ public class LineupRESTService {
   @POST
   public void setLineup(LineupDTO lineupDTO) {
 
-    MatchDTO match = matchGateway.getById(lineupDTO.fixtureId);
-    Fixture f = new Fixture(match.id, match.utcDate, match.homeTeam, match.awayTeam);
+    Fixture fixture = fixtureGateway.getById(lineupDTO.fixtureId);
     Team t;
-    if (lineupDTO.teamId.equalsIgnoreCase(match.homeTeam.id())) {
-      t = match.homeTeam;
-    } else if (lineupDTO.teamId.equalsIgnoreCase(match.awayTeam.id())) {
-      t= match.awayTeam;
+    if (lineupDTO.teamId.equalsIgnoreCase(fixture.homeTeam().id())) {
+      t = fixture.homeTeam();
+    } else if (lineupDTO.teamId.equalsIgnoreCase(fixture.awayTeam().id())) {
+      t= fixture.awayTeam();
     } else {
       throw new IllegalArgumentException("Invalid team id provided: " + lineupDTO.teamId);
     }
-    lineupService.lineupReceived(f, t, lineupDTO.lineup );
+    lineupService.lineupReceived(fixture, t, lineupDTO.lineup );
 
   }
 }
