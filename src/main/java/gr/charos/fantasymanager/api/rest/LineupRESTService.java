@@ -27,7 +27,7 @@ public class LineupRESTService {
   public void setLineup(LineupDTO lineupDTO) {
 
     MatchDTO match = matchGateway.getById(lineupDTO.fixtureId);
-    Fixture f = new Fixture(match.id, match.utcDate.toLocalDateTime(), match.homeTeam, match.awayTeam);
+    Fixture f = new Fixture(match.id, match.utcDate, match.homeTeam, match.awayTeam);
     Team t;
     if (lineupDTO.teamId.equalsIgnoreCase(match.homeTeam.id())) {
       t = match.homeTeam;

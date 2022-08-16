@@ -1,7 +1,11 @@
 package gr.charos.fantasymanager.domain;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
-public record Fixture(String id, LocalDateTime date, Team homeTeam, Team awayTeam) {
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
+public record Fixture(String id, @JsonSetter("utcDate") ZonedDateTime date, Team homeTeam, Team awayTeam) {
 
 }

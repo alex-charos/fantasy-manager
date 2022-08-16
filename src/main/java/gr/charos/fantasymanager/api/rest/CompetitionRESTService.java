@@ -1,26 +1,25 @@
 package gr.charos.fantasymanager.api.rest;
 
-import gr.charos.fantasymanager.gateway.TeamGateway;
-import gr.charos.fantasymanager.gateway.dto.TeamListRootDTO;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
+import gr.charos.fantasymanager.domain.Team;
+import gr.charos.fantasymanager.service.TeamService;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import java.util.List;
 
 
 @Path("/competitions")
 public class CompetitionRESTService {
 
-
-  @RestClient
-  TeamGateway teamGateway;
-
+  @Inject
+  TeamService teamService;
 
   @Path("/{competitionId}/teams")
   @GET
-  public TeamListRootDTO getTeamsBy(@PathParam("competitionId") String competition) {
-    return teamGateway.getTeamsByCompetition(competition);
+  public List<Team> getTeamsBy(@PathParam("competitionId") String competition) {
+    return teamService.getTeamsByCompetition(competition);
   }
 
 }

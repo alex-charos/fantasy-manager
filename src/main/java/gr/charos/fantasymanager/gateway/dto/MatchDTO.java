@@ -2,7 +2,6 @@ package gr.charos.fantasymanager.gateway.dto;
 
 import gr.charos.fantasymanager.domain.Team;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class MatchDTO {

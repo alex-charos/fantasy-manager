@@ -30,15 +30,13 @@ public class LineupService {
 
       for (SquadPredictionEntity prediction : predictions) {
         List<Boolean> correct = lineup.stream().map(p->prediction.getPlayers().contains(p)).collect(Collectors.toList());
-        double score = scoringService.scorePrediction(prediction.predictionDate, fixture.date(), correct.size() );
-        PredictionResult result = new PredictionResult(prediction.predictor, fixture.id(), team.id(), correct.size(), score,prediction.predictionDate, fixture.date(), LocalDateTime.now());
+        double score = scoringService.scorePrediction(prediction.predictionDate, fixture.date().toLocalDateTime(), correct.size() );
+        PredictionResult result = new PredictionResult(prediction.predictor, fixture.id(), team.id(), correct.size(), score,prediction.predictionDate, fixture.date().toLocalDateTime(), LocalDateTime.now());
         results.add(result);
       }
 
       results.stream().map(PredictionResultEntity::of).forEach( p-> p.persist());
 
   }
-
-
 
 }

@@ -183,6 +183,7 @@ class Team extends React.Component {
 
 class TeamsList extends React.Component {
   render() {
+    if (this.props.teams) {
     return (
             <div> Select Team:
                 <select>
@@ -197,8 +198,12 @@ class TeamsList extends React.Component {
                  </select>
              </div>
     );
+    } else {
+        retucn (<div>No Team Selected </div>);
+    }
   }
 }
+
 class FixturesList extends React.Component {
   render() {
    if (this.props.fixtures) {
@@ -241,14 +246,12 @@ class Game extends React.Component {
           .then(res => res.json())
           .then(
             (result) => {
+               console.log(result);
               this.setState({
                 isLoaded: true,
-                teams: result.teams
+                teams: result
               });
             },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
             (error) => {
               this.setState({
                 isLoaded: true,
@@ -300,32 +303,6 @@ class Game extends React.Component {
 
             })
 
-
-        fetch("/teams/"+ team.id)
-                  .then(res => res.json())
-                  .then(
-                    (result) => {
-                              this.setState(
-                                {   selectedTeam:team,
-                                    selectedPlayers:result.squad,
-                                    availablePlayers:[],
-                                    selectedFixture: null,
-                                    teams: this.state.teams,
-                                    fixtures:[]
-                                    }
-                                    );
-
-                    },
-                    // Note: it's important to handle errors here
-                    // instead of a catch() block so that we don't swallow
-                    // exceptions from actual bugs in components.
-                    (error) => {
-                      this.setState({
-                        isLoaded: true,
-                        error
-                      });
-                    }
-                  )
     }
 
     addToSelectedSquad = (p) => {
@@ -381,7 +358,7 @@ class Game extends React.Component {
                                                         selectedPlayers: [],
                                                         fixtures: [],
                                                         selectedFixture: null
-                                                    }));
+                                                   }));
     }
 
         setLineup = ()=> {
