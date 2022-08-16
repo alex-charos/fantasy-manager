@@ -99,31 +99,32 @@ class StartingSquad extends React.Component {
     render() {
       if (this.props.players && this.props.players.length >0) {
                 return (
-                    <div>
-                        <div className="text-center"> Starting 11  </div>
-                        <div className = "grid grid-rows-4 gap-4">
-                             <div className = "flex  place-content-center">
+
+
+                        <div className = "grid grid-rows-5 gap-4">
+                        <div className="text-center font-mono"> Starting 11  </div>
+                             <div className = "flex place-content-center">
                                 { this.state.goalkeepers.map((p)=>(
                                     <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                  )) }
                             </div>
-                            <div className = "flex  justify-between">
+                            <div className = "flex justify-between space-x-4">
                                  { this.state.defenders.map((p)=>(
                                     <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                     )) }
                             </div>
-                            <div className = "flex  place-content-center">
+                            <div className = "flex  place-content-center space-x-4">
                                  { this.state.midfielders.map((p)=>(
                                     <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                   )) }
                             </div>
-                            <div className = "flex  place-content-center">
+                            <div className = "flex  place-content-center space-x-4">
                                  { this.state.attackers.map((p)=>(
                                     <PlayerAvatar key={p.id} player={p} onPlayerClick={this.props.onPlayerClick} />
                                    )) }
                             </div>
                         </div>
-                    </div>
+
             );
         } else {
             return (<div>Please select Team to show starting 11 </div>);
@@ -182,9 +183,9 @@ class TeamsList extends React.Component {
   render() {
     if (this.props.teams) {
     return (
-            <div> Select Team:
-                <select onChange={(event)=>this.props.onTeamSelect(event.target.value)} >
-                    <option key="noselect">Select Team</option>
+            <div>
+                <select className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={(event)=>this.props.onTeamSelect(event.target.value)} >
+                    <option key="noselect" value ="noselect">Select Team</option>
                     {
                         this.props.teams.map((p)=>(
                             <option key = {p.id} value={p.id}  >
@@ -204,12 +205,12 @@ class TeamsList extends React.Component {
 class FixturesList extends React.Component {
   render() {
    if (this.props.fixtures) {
-    return (<div> Select Fixture:
-             <select onChange={()=>this.props.onFixtureSelect} >
+    return (<div>
+             <select className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={(event)=>this.props.onFixtureSelect(event.target.value)} >
                 <option key="noselectFixture" >Select Fixture</option>
                 {
                     this.props.fixtures.map((p)=>(
-                        <option key = {p.id} value={p} >
+                        <option key = {p.id} value={p.id} >
                                    {p.homeTeam.name} vs {p.awayTeam.name} @ {p.utcDate}
                         </option>
                     ))
@@ -258,11 +259,11 @@ class Game extends React.Component {
           )
       }
 
-    selectFixture = (fixture) => {
+    selectFixture = (fixtureId) => {
         //clean up selection
         this.state.selectedPlayers.forEach(p=>  this.removeFromSelectedSquad(p));
-
-        fetch("/predictions/fixture/" + fixture.id+ "/team/" + this.state.selectedTeam.id)
+        let fixture = this.state.fixtures.find(p=> p.id ===fixtureId);
+        fetch("/predictions/fixture/" + fixtureId+ "/team/" + this.state.selectedTeam.id)
             .then((value) => value.json())
             .then(
                 (result) => {
@@ -285,7 +286,20 @@ class Game extends React.Component {
 
     selectTeam = (teamId) => {
         let team = this.state.teams.find(p=> p.id ===teamId);
+        if (teamId ==="noselect") {
+            this.setState({
+                        competition: "PL",
+                        teams: this.state.teams,
+                        selectedTeam: null,
+                        availablePlayers: this.props.players,
+                        selectedPlayers: [],
+                        fixtures: [],
+                        selectedFixture: null,
+                        selectionComplete: false
+                    });
 
+                return;
+        }
         Promise.all([
             fetch("/teams/"+ teamId).then((value) => value.json()),
             fetch("/teams/"+teamId+"/fixtures").then((value) => value.json())]
@@ -379,20 +393,20 @@ class Game extends React.Component {
                 <FixturesList fixtures={this.state.fixtures} onFixtureSelect={this.selectFixture} />
             </div>
             <div className ="columns-2">
-                <div class=" bg-gradient-to-r from-sky-500 to-indigo-500 ">
+                <div className=" bg-gradient-to-r from-sky-500 to-indigo-500 ">
                     <PlayerList head="Available Players" players={this.state.availablePlayers} onPlayerClick={this.addToSelectedSquad} />
 
                 </div>
-                <div class="shadow-2xl bg-white rounded-lg bg-green-600">
+                <div className="flex space-x-4 shadow-2xl bg-white rounded-lg bg-green-600 place-content-center">
                     <StartingSquad  players={this.state.selectedPlayers} onPlayerClick={this.removeFromSelectedSquad} />
                 </div>
             </div>
-            <button onClick={this.savePrediction}>Save Selection</button>
-            <button onClick={this.setLineup}>Set Lineup</button>
+            <button className="mt-6 bg-sky-500 hover:bg-indigo-500 text-white py-2 px-4 rounded-full" onClick={this.savePrediction}>Save Selection</button>
+
         </div>
     );
   }
 }
-
+////hiding <button onClick={this.setLineup}>Set Lineup</button>
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Game />);
