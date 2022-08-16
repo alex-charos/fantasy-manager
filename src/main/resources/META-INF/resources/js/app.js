@@ -387,10 +387,6 @@ class Game extends React.Component {
             </div>
             <button onClick={this.savePrediction}>Save Selection</button>
             <button onClick={this.setLineup}>Set Lineup</button>
-            <select>
-            <option onClick={this.savePrediction}> nooo </option>
-            <option onClick={this.savePrediction}> TEST </option>
-            </select>
         </div>
     );
   }
