@@ -186,11 +186,11 @@ class TeamsList extends React.Component {
     if (this.props.teams) {
     return (
             <div> Select Team:
-                <select>
+                <select onChange={(event)=>this.props.onTeamSelect(event.target.value)} >
                     <option key="noselect">Select Team</option>
                     {
                         this.props.teams.map((p)=>(
-                            <option key = {p.id} onClick={()=>this.props.onTeamSelect(p)} >
+                            <option key = {p.id} value={p.id}  >
                                        {p.name}
                             </option>
                         ))
@@ -208,11 +208,11 @@ class FixturesList extends React.Component {
   render() {
    if (this.props.fixtures) {
     return (<div> Select Fixture:
-             <select>
-                <option key="noselectFixture">Select Fixture</option>
+             <select onChange={()=>this.props.onFixtureSelect} >
+                <option key="noselectFixture" >Select Fixture</option>
                 {
                     this.props.fixtures.map((p)=>(
-                        <option key = {p.id} onClick={()=>this.props.onFixtureSelect(p)} >
+                        <option key = {p.id} value={p} >
                                    {p.homeTeam.name} vs {p.awayTeam.name} @ {p.utcDate}
                         </option>
                     ))
@@ -286,10 +286,12 @@ class Game extends React.Component {
 
     }
 
-    selectTeam = (team) => {
+    selectTeam = (teamId) => {
+        let team = this.state.teams.find(p=> p.id ===teamId);
+
         Promise.all([
-            fetch("/teams/"+ team.id).then((value) => value.json()),
-            fetch("/teams/"+team.id+"/fixtures").then((value) => value.json())]
+            fetch("/teams/"+ teamId).then((value) => value.json()),
+            fetch("/teams/"+teamId+"/fixtures").then((value) => value.json())]
             )
             .then( ([squad, fixtures]) => {
                 this.setState({selectedTeam:team,
@@ -385,6 +387,10 @@ class Game extends React.Component {
             </div>
             <button onClick={this.savePrediction}>Save Selection</button>
             <button onClick={this.setLineup}>Set Lineup</button>
+            <select>
+            <option onClick={this.savePrediction}> nooo </option>
+            <option onClick={this.savePrediction}> TEST </option>
+            </select>
         </div>
     );
   }
