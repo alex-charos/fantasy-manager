@@ -47,5 +47,7 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build  -Dquarkus.container-image.build=true  -Dquarkus.container-image.push=true -Dquarkus.container-image.builder=jib -Dquarkus.container-image.registry=europe-west8-docker.pkg.dev -Dquarkus.container-image.group=fantasy-manager-359419/fantasy-manager-registry
-
-
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloudrun@v0'
+        with:
+          image: 'europe-west8-docker.pkg.dev/fantasy-manager-359419/fantasy-manager-registry/fantasy-manager:latest'
