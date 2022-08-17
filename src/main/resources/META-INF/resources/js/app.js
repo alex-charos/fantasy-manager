@@ -152,10 +152,6 @@ class PlayerGroup extends React.Component {
 }
 class PlayerAvatar extends React.Component {
     render() {
-       // return (<div  className="rounded-full border-2 border-white-100 flex place-content-center" key={this.props.player.id} onClick={()=>this.props.onPlayerClick(this.props.player)} >
-       //           <div className=" rounded-full flex justify-center items-center text-sm">  {this.props.player.name} </div>
-       //           <div className="w-6 h-6 bg-red-600 text-lg place-content-center rounded-full border-2 border-white-100 text-center"> - </div>
-       //       </div>);
        return ( <div clasName ="flex text-center place-content-center">
         <div>
             <center>
