@@ -363,7 +363,6 @@ class Game extends React.Component {
         this.setState(state);
     }
     savePrediction = ()=> {
-        console.log(this.state);
           const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

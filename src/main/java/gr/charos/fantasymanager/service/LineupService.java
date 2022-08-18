@@ -4,6 +4,7 @@ import gr.charos.fantasymanager.domain.Fixture;
 import gr.charos.fantasymanager.domain.Player;
 import gr.charos.fantasymanager.domain.PredictionResult;
 import gr.charos.fantasymanager.domain.Team;
+import gr.charos.fantasymanager.entity.LeagueEntity;
 import gr.charos.fantasymanager.entity.PredictionResultEntity;
 import gr.charos.fantasymanager.entity.SquadPredictionEntity;
 
@@ -32,6 +33,12 @@ public class LineupService {
         List<Boolean> correct = lineup.stream().map(p->prediction.getPlayers().contains(p)).collect(Collectors.toList());
         double score = scoringService.scorePrediction(prediction.predictionDate, fixture.date().toLocalDateTime(), correct.size() );
         PredictionResult result = new PredictionResult(prediction.predictor, fixture.id(), team.id(), correct.size(), score,prediction.predictionDate, fixture.date().toLocalDateTime(), LocalDateTime.now());
+
+        List<LeagueEntity> leagues = LeagueEntity.findByPredictor(prediction.predictor.id());
+        leagues.stream().forEach(league-> {
+          league.participants = league.participants.stream().map(p-> p.addPoints(score)).collect(Collectors.toSet());
+        });
+
         results.add(result);
       }
 
