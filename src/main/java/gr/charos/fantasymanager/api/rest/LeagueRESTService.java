@@ -10,6 +10,7 @@ import io.quarkus.oidc.UserInfo;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.security.Permission;
+import java.util.List;
 
 @Path("leagues")
 public class LeagueRESTService {
@@ -26,6 +27,13 @@ public class LeagueRESTService {
     return leagueService.getLeagueByCode(leagueCode);
   }
 
+  @GET
+  public List<League> getUsersLeagues() throws LeagueNotFoundException {
+    return  leagueService.getLeaguesByPredictor(new Predictor(userInfo.getString("email"), userInfo.getString("name")));
+
+  }
+
+
   @POST
   public League createLeague(LeagueCreationDTO leagueCreationDTO) {
     Predictor p = new Predictor(userInfo.getString("email"), userInfo.getString("name"));
@@ -38,5 +46,7 @@ public class LeagueRESTService {
     Predictor p = new Predictor(userInfo.getString("email"), userInfo.getString("name"));
     return leagueService.joinLeague(leagueCode,p);
   }
+
+
 
 }

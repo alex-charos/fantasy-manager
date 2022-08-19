@@ -99,9 +99,7 @@ class StartingSquad extends React.Component {
     render() {
       if (this.props.players && this.props.players.length >0) {
                 return (
-
-
-                        <div className = "grid grid-rows-5 gap-4">
+                    <div className = "grid grid-rows-5 gap-4">
                         <div className="text-center font-mono"> Starting 11  </div>
                              <div className = "flex  place-content-center">
                                 { this.state.goalkeepers.map((p)=>(

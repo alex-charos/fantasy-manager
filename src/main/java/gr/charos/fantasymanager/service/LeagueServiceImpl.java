@@ -9,7 +9,9 @@ import gr.charos.fantasymanager.exceptions.LeagueNotFoundException;
 
 import javax.inject.Singleton;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 public class LeagueServiceImpl implements LeagueService {
@@ -50,5 +52,10 @@ public class LeagueServiceImpl implements LeagueService {
   @Override
   public League getLeagueByCode(String leagueCode) throws LeagueNotFoundException {
     return Optional.ofNullable(LeagueEntity.findByCode(leagueCode)).orElseThrow(()-> new LeagueNotFoundException(leagueCode)).toLeague();
+  }
+
+  @Override
+  public List<League> getLeaguesByPredictor(Predictor p) {
+      return LeagueEntity.findByPredictor(p.id()).stream().map(LeagueEntity::toLeague).collect(Collectors.toList());
   }
 }

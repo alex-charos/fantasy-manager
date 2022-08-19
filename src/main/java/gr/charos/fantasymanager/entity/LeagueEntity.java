@@ -29,7 +29,7 @@ public class LeagueEntity extends PanacheMongoEntity  {
   }
 
   public static List<LeagueEntity> findByPredictor(String predictorId) {
-    return list("participants.id", predictorId);
+    return list("participants.predictor.id", predictorId);
   }
 
   public static LeagueEntity findByCode(String code) {

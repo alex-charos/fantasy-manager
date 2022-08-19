@@ -16,4 +16,6 @@ public interface LeagueService {
 
   League getLeagueByCode(String leagueCode) throws LeagueNotFoundException;
 
+  List<League> getLeaguesByPredictor(Predictor p );
+
 }
