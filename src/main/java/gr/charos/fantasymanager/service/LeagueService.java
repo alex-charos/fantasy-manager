@@ -12,7 +12,7 @@ public interface LeagueService {
 
   League joinLeague(String leagueCode, Predictor p) throws LeagueNotFoundException;
 
-  League leaveLeague(String leagueCode, Predictor p) throws LeagueNotFoundException;
+  void leaveLeague(String leagueCode, Predictor p) throws LeagueNotFoundException;
 
   League getLeagueByCode(String leagueCode) throws LeagueNotFoundException;
 

@@ -40,14 +40,18 @@ public class LeagueServiceImpl implements LeagueService {
   }
 
   @Override
-  public League leaveLeague(String leagueCode, Predictor p) throws LeagueNotFoundException {
+  public void leaveLeague(String leagueCode, Predictor p) throws LeagueNotFoundException {
     LeagueEntity l = Optional.ofNullable(LeagueEntity.findByCode(leagueCode)).orElseThrow(()-> new LeagueNotFoundException(leagueCode));
     if (l.participants == null) {
       l.participants = new HashSet<>();
     }
     l.participants.remove(new LeagueParticipant(p,0));
-    l.update();
-    return l.toLeague();  }
+    if (l.participants.isEmpty()) {
+      l.delete();
+    } else {
+      l.update();
+    }
+  }
 
   @Override
   public League getLeagueByCode(String leagueCode) throws LeagueNotFoundException {

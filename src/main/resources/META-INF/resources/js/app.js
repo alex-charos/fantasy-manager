@@ -391,7 +391,7 @@ class Game extends React.Component {
   render() {
     return (
         <div>
-            <div className="gap-8 float-right"> <Profile /> </div>
+            <div> <Profile /> </div>
             <div className="columns-1">
                 <TeamsList teams={this.state.teams} onTeamSelect={this.selectTeam} />
                 <FixturesList fixtures={this.state.fixtures} onFixtureSelect={this.selectFixture} />

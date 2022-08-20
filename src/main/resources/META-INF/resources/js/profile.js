@@ -18,9 +18,6 @@ class Profile extends React.Component {
                 user: result
               });
             },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
             (error) => {
               this.setState({
                 isLoaded: true,
@@ -35,8 +32,16 @@ class Profile extends React.Component {
     render() {
         if (this.state.isLoaded) {
         return (
-                <div>
-                Hello, {this.state.user.name} !
+                <div className="gap-8 float-right flex columns-1">
+                    <div>
+                        Hello, {this.state.user.name} !
+                    </div>
+                    <div>
+                        <a className="mt-6 bg-sky-500 hover:bg-indigo-500 text-white py-2 px-4 rounded-full" href="/">Game</a>
+                    </div>
+                    <div>
+                        <a className="mt-6 bg-sky-500 hover:bg-indigo-500 text-white py-2 px-4 rounded-full" href="/leagues.html">Leagues</a>
+                    </div>
                 </div>
         );
         } else {
