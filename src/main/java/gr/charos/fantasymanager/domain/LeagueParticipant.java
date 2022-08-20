@@ -1,11 +1,12 @@
 package gr.charos.fantasymanager.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
-public record LeagueParticipant(Predictor predictor, double points) {
+public record LeagueParticipant(Predictor predictor, double points) implements Comparable<LeagueParticipant> {
 
   public LeagueParticipant addPoints(double points) {
-    return new LeagueParticipant(this.predictor, Double.sum(this.points, points));
+    return new LeagueParticipant(this.predictor, BigDecimal.valueOf(points).add(BigDecimal.valueOf(this.points)).doubleValue());
   }
 
   @Override
@@ -19,5 +20,15 @@ public record LeagueParticipant(Predictor predictor, double points) {
   @Override
   public int hashCode() {
     return Objects.hash(predictor);
+  }
+
+  @Override
+  public int compareTo(LeagueParticipant o) {
+    if (o.points() < this.points) {
+      return -1;
+    } else if (this.points<o.points()) {
+      return 1;
+    }
+    return 0;
   }
 }

@@ -36,7 +36,7 @@ const LeagueCreation = (props) => {
 
 }
 
-const LeagueParticipation = () => {
+const LeagueParticipation = (props) => {
 
     const [leagueJoined, setLeagueJoined] = React.useState(false);
     const [code, setCode] = React.useState("")
@@ -52,6 +52,7 @@ const LeagueParticipation = () => {
                         .then(data => {
                                 setName(data.name);
                                 setLeagueJoined(true);
+                                props.leagueJoined(data);
                         });
     }
 
@@ -114,8 +115,14 @@ const League = (props) => {
     return (
         props.league ?
         <div>
-            <label>League Name:</label>
-            <div>{props.league.name}</div>
+            <div>
+                <label>League Name:</label>
+                <div>{props.league.name}</div>
+            </div>
+            <div>
+                <label>League Code:</label>
+                <div>{props.league.code}</div>
+            </div>
             <div>
                 <label>Participants</label>
                 <table className="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -169,8 +176,10 @@ const LeagueManagement  = () =>{
         getLeagues();
     }
     const leagueJoined = (league) => {
+        console.log(league);
         setSelectedLeague(league);
         getLeagues();
+
     }
 
     const leaveLeague =  (league) => {

@@ -3,6 +3,7 @@ package gr.charos.fantasymanager.api.rest;
 
 import gr.charos.fantasymanager.api.rest.dto.LineupDTO;
 import gr.charos.fantasymanager.domain.Fixture;
+import gr.charos.fantasymanager.domain.FixtureLineup;
 import gr.charos.fantasymanager.domain.Team;
 import gr.charos.fantasymanager.gateway.FixtureGateway;
 import gr.charos.fantasymanager.service.LineupService;
@@ -34,7 +35,7 @@ public class LineupRESTService {
     } else {
       throw new IllegalArgumentException("Invalid team id provided: " + lineupDTO.teamId);
     }
-    lineupService.lineupReceived(fixture, t, lineupDTO.lineup );
+    lineupService.lineupReceived( new FixtureLineup(fixture.id(), t, lineupDTO.lineup ));
 
   }
 }

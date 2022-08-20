@@ -1,6 +1,7 @@
 package gr.charos.fantasymanager.service;
 
 import javax.inject.Singleton;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -34,10 +35,11 @@ public class ScoringServiceImpl implements  ScoringService {
       timeWeight = 2.5;
     }
 
-    double points = 0;
+    BigDecimal points = BigDecimal.ZERO;
     for (; correct >0; correct--) {
-      points += correct*timeWeight;
+     points = points.add( BigDecimal.valueOf(correct).multiply(BigDecimal.valueOf(timeWeight)));
+
     }
-    return points;
+    return points.doubleValue();
   }
 }
