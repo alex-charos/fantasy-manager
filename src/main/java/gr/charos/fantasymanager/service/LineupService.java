@@ -76,7 +76,7 @@ public class LineupService {
 
               .collect(Collectors.toSet());
             league.update();
-          }
+
           }
         });
 
