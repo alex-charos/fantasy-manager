@@ -66,17 +66,18 @@ public class LineupService {
 
         List<LeagueEntity> leagues = LeagueEntity.findByPredictor(prediction.predictor.id());
         leagues.stream().forEach(league-> {
-         // if (league.getScoredFixtureIds().add(fixture.id())) {
+          if (league.getScoredFixtureIds().add(fixture.id())) {
             league.participants = league.participants.stream().map(p->  {
-                                                                    if (p.predictor().id().equals(prediction.predictor.id())) {
-                                                                     p = p.addPoints(score);
-                                                                    }
-                                                                      return  p;
-                                                                        })
+                if (p.predictor().id().equals(prediction.predictor.id())) {
+                  p = p.addPoints(score);
+                }
+                return  p;
+              })
 
-                                  .collect(Collectors.toSet());
+              .collect(Collectors.toSet());
             league.update();
-        //  }
+          }
+          }
         });
 
         results.add(result);
