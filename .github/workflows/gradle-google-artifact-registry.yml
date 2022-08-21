@@ -52,3 +52,4 @@ jobs:
         with:
           service: 'fantasy-manager'
           image: 'europe-west8-docker.pkg.dev/fantasy-manager-359419/fantasy-manager-registry/fantasy-manager:1.0.0-SNAPSHOT'
+          region: 'europe-west8'
