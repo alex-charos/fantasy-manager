@@ -183,13 +183,29 @@ class Team extends React.Component {
 
     }
 }
+class ErrorList extends React.Component {
+   render()  {
+                if (this.props.errors.length >0) {
+                    return (
+                        <div>
+                          {this.props.errors.map((p, i)=>(
+                            <div key={i}>{p}</div>
+                             ))
 
+                           }
+                        </div>
+                    );
+                } else {
+                    return (<div> </div>);
+                }
+    }
+}
 class TeamsList extends React.Component {
   render() {
     if (this.props.teams) {
     return (
             <div>
-                <select className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={(event)=>this.props.onTeamSelect(event.target.value)} >
+                <select onChange={(event)=>this.props.onTeamSelect(event.target.value)} value = {this.props.selectedTeam.id} className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"  >
                     <option key="noselect" value ="noselect">Select Team</option>
                     {
                         this.props.teams.map((p)=>(
@@ -235,13 +251,14 @@ class Game extends React.Component {
         this.state = {
             competition: "PL",
             teams: [],
-            selectedTeam: null,
+            selectedTeam: {"id":"noselect"},
             availablePlayers: this.props.players,
             selectedPlayers: [],
             fixtures: [],
             selectedFixture: null,
             selectionComplete: false,
-            isAdmin: this.props.isAdmin
+            isAdmin: this.props.isAdmin,
+            errors: []
         };
     }
 
@@ -319,7 +336,7 @@ class Game extends React.Component {
             this.setState({
                         competition: "PL",
                         teams: this.state.teams,
-                        selectedTeam: null,
+                        selectedTeam: {"id":"noselect"},
                         availablePlayers: this.props.players,
                         selectedPlayers: [],
                         fixtures: [],
@@ -385,8 +402,20 @@ class Game extends React.Component {
         this.setState(state);
     }
     savePrediction = ()=> {
-        console.log('about to save');
-        console.log(this.state);
+        let errs = [];
+        if (this.state.selectedTeam === null || this.state.selectedTeam.id === "noselect") {
+           errs.push("Please select a team");
+        }
+        if (this.state.selectedFixture === null || this.state.selectedFixture.id === "noselect") {
+            errs.push("Please select a fixture")
+        }
+        if (this.state.selectedPlayers === null || this.state.selectedPlayers.length !== 11  ){
+            errs.push("Select 11 players");
+        }
+
+        this.setState({errors:errs});
+        if (errs.length ==0) {
+
           const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -396,12 +425,14 @@ class Game extends React.Component {
                 .then(data => this.setState({
                                                         competition: "PL",
                                                         teams: this.state.teams,
-                                                        selectedTeam: "noselect",
+                                                        selectedTeam: {"id":"noselect"},
                                                         availablePlayers: this.props.players,
                                                         selectedPlayers: [],
                                                         fixtures: [],
-                                                        selectedFixture: null
+                                                        selectedFixture: null,
+                                                        errors:errs
                                                    }));
+        }
     }
 
         setLineup = ()=> {
@@ -418,7 +449,7 @@ class Game extends React.Component {
     return (
         <div>
             <div className="columns-1">
-                <TeamsList teams={this.state.teams} onTeamSelect={this.selectTeam} />
+                <TeamsList teams={this.state.teams} onTeamSelect={this.selectTeam} selectedTeam={this.state.selectedTeam} />
                 <FixturesList fixtures={this.state.fixtures} onFixtureSelect={this.selectFixture} />
             </div>
             <div className ="flex flex-row">
@@ -439,6 +470,9 @@ class Game extends React.Component {
 
 
             }
+            <div>
+                <ErrorList errors={this.state.errors} />
+            </div>
 
         </div>
     );
