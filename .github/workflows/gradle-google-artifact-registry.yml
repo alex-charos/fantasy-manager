@@ -53,3 +53,8 @@ jobs:
           service: 'fantasy-manager'
           image: 'europe-west8-docker.pkg.dev/fantasy-manager-359419/fantasy-manager-registry/fantasy-manager:1.0.0-SNAPSHOT'
           region: 'europe-west8'
+          env_vars: |
+            MATCHES_API_AUTH_VALUE=${{secrets.MATCHES_API_AUTH_VALUE}}
+            QUARKUS_MONGODB_CONNECTION_STRING=${{secrets.QUARKUS_MONGODB_CONNECTION_STRING}}
+            QUARKUS_OIDC_CLIENT_ID=${{secrets.QUARKUS_OIDC_CLIENT_ID}}
+            QUARKUS_OIDC_CREDENTIALS_SECRET=${{secrets.QUARKUS_OIDC_CREDENTIALS_SECRET}}
