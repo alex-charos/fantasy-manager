@@ -2,20 +2,23 @@
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./gradlew quarkusDev
-```
-CLI
-
-```shell script
-quarkus dev
-```
-
 ## Prerequisities:
 
 - Java 17
 - Docker or mongodb instance (see below)
+- Quarkus cli (optional)
+
+
+You can run your application in dev mode that enables live coding using:
+```shell script
+./gradlew quarkusDev
+```
+
+Quarkus CLI:
+
+```shell script
+quarkus dev
+```
 
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
