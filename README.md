@@ -12,6 +12,12 @@ CLI
 quarkus dev
 ```
 
+## Prerequisities:
+
+- Java 17
+- Docker or mongodb instance (see below)
+
+
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
 ## Packaging and running the application
@@ -34,4 +40,30 @@ Run:
 ```shell script
 ./gradlew clean  build   -Dquarkus.container-image.build=true  -Dquarkus.container-image.push=true
 ```
+
+## Sample application-dev.properties file for local development:
+
+```shell script
+quarkus.mongodb.database=predictions
+
+
+quarkus.rest-client.matches-api.url=https://api.football-data.org/
+quarkus.rest-client.matches-api.scope=javax.inject.Singleton
+matches-api.auth.value=${your-api-key}
+
+
+
+quarkus.oidc.provider=google
+quarkus.oidc.client-id=${google-oidc-client-id}
+quarkus.oidc.credentials.secret=${google-oidc-client-secret}
+```
+
+if docker not running (therefore quarkus cannot spin up a mongodb container for you), you will have to provide a mongo url via :
+
+
+
+```shell script
+quarkus.mongodb.connection-string = mongodb://mongo1:27017,mongo2:27017
+```
+
 
