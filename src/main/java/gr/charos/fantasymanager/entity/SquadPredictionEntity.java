@@ -6,12 +6,15 @@ import gr.charos.fantasymanager.domain.Team;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @MongoEntity
 public class SquadPredictionEntity extends PanacheMongoEntity {
+
+  public ObjectId id; // used by MongoDB for the _id field
 
   public Predictor predictor;
   public String fixtureId;

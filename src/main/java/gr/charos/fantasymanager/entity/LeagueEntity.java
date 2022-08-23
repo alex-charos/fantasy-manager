@@ -18,7 +18,7 @@ public class LeagueEntity extends PanacheMongoEntity  {
   public String name;
   public LeagueType type;
   public Set<LeagueParticipant> participants;
-  public Set<String> scoredFixtureIds;
+  public Set<String> scoredPredictions;
 
   public LeagueEntity() {
   }
@@ -66,15 +66,15 @@ public class LeagueEntity extends PanacheMongoEntity  {
     this.participants = participants;
   }
 
-  public Set<String> getScoredFixtureIds() {
-    if (scoredFixtureIds == null) {
-      scoredFixtureIds = new HashSet<>();
+  public Set<String> getScoredPredictions() {
+    if (scoredPredictions == null) {
+      scoredPredictions = new HashSet<>();
     }
-    return scoredFixtureIds;
+    return scoredPredictions;
   }
 
-  public void setScoredFixtureIds(Set<String> scoredFixtureIds) {
-    this.scoredFixtureIds = scoredFixtureIds;
+  public void setScoredPredictions(Set<String> scoredPredictions) {
+    this.scoredPredictions = scoredPredictions;
   }
 
   public static List<LeagueEntity> findByPredictor(String predictorId) {
@@ -93,5 +93,6 @@ public class LeagueEntity extends PanacheMongoEntity  {
   public League toLeague() {
     return new League(this.code, this.name, this.type, this.participants);
   }
+
 
 }

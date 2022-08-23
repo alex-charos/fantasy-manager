@@ -69,7 +69,7 @@ public class LineupService {
 
         List<LeagueEntity> leagues = LeagueEntity.findByPredictor(prediction.predictor.id());
         leagues.stream().forEach(league-> {
-          if (league.getScoredFixtureIds().add(fixture.id())) {
+          if (league.getScoredPredictions().add(prediction.id.toString())) {
             league.participants = league.participants.stream().map(p->  {
                 if (p.predictor().id().equals(prediction.predictor.id())) {
                   p = p.addPoints(score);
