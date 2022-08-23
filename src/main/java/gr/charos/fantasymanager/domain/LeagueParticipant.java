@@ -31,4 +31,12 @@ public record LeagueParticipant(Predictor predictor, double points) implements C
     }
     return 0;
   }
+
+  @Override
+  public String toString() {
+    return "LeagueParticipant{" +
+      "predictor=" + predictor +
+      ", points=" + points +
+      '}';
+  }
 }

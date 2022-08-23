@@ -51,9 +51,12 @@ public class LineupService {
     List<PredictionResult> results = new ArrayList<>();
 
       for (SquadPredictionEntity prediction : predictions) {
+        LOGGER.info("Scoring {}", prediction.getPredictor().id());
         int correct = lineup.lineup().stream().map(p->prediction.getPlayers().contains(p)).filter(Boolean::booleanValue).collect(Collectors.toList()).size();
-
         double score = scoringService.scorePrediction(prediction.predictionDate, fixture.date().toLocalDateTime(),  correct );
+
+        LOGGER.info("Score {}", score);
+
         PredictionResult result = new PredictionResult(prediction.predictor,
                                                         fixture.id(),
                                                         team.id(),
@@ -71,6 +74,7 @@ public class LineupService {
                 if (p.predictor().id().equals(prediction.predictor.id())) {
                   p = p.addPoints(score);
                 }
+                LOGGER.info("SCORED LEAGUE {}. PREDICTOR {}", league.getName(), p);
                 return  p;
               })
 
