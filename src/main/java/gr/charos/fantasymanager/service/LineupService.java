@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -33,7 +34,7 @@ public class LineupService {
   public void lineupReceived(FixtureLineup lineup) {
 
 
-    FixtureLineupEntity existing =  FixtureLineupEntity.findByFixtureIdAndTeam(lineup.fixtureId(), lineup.team());
+    FixtureLineupEntity existing =  FixtureLineupEntity.findByFixtureIdAndTeamId(lineup.fixtureId(), lineup.teamId());
     if (existing!=null) {
       LOGGER.info("Fixture Entity Already exists {}", existing);
       existing.lineup = lineup.lineup();
@@ -43,10 +44,10 @@ public class LineupService {
       fle.persist();
     }
 
-    List<SquadPredictionEntity> predictions = SquadPredictionEntity.findByFixtureIdAndTeam(lineup.fixtureId(), lineup.team().id());
+    List<SquadPredictionEntity> predictions = SquadPredictionEntity.findByFixtureIdAndTeam(lineup.fixtureId(), lineup.teamId());
 
     Fixture fixture = fixtureRepository.getFixtureById(lineup.fixtureId());
-    Team team  = lineup.team().id().equalsIgnoreCase(fixture.homeTeam().id())? fixture.homeTeam():fixture.awayTeam();
+    Team team  = lineup.teamId().equalsIgnoreCase(fixture.homeTeam().id())? fixture.homeTeam():fixture.awayTeam();
 
     List<PredictionResult> results = new ArrayList<>();
 
@@ -89,6 +90,15 @@ public class LineupService {
 
       results.stream().map(PredictionResultEntity::of).forEach( p-> p.persist());
 
+  }
+
+  public Optional<FixtureLineup> getLineup(String fixtureId, String teamId) {
+    FixtureLineupEntity fle = FixtureLineupEntity.findByFixtureIdAndTeamId(fixtureId, teamId);
+    if (fle == null) {
+      return Optional.empty();
+    } else {
+      return Optional.of(fle.toLineup());
+    }
   }
 
 }

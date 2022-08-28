@@ -1,28 +1,18 @@
 package gr.charos.fantasymanager.api.rest.dto;
 
-import gr.charos.fantasymanager.domain.HomeAway;
-import gr.charos.fantasymanager.domain.Player;
-import gr.charos.fantasymanager.domain.Predictor;
-import gr.charos.fantasymanager.domain.Team;
+import gr.charos.fantasymanager.domain.*;
 import gr.charos.fantasymanager.entity.SquadPredictionEntity;
 
 import java.util.List;
+import java.util.Optional;
 
-public class SquadPredictionDTO {
+public record SquadPredictionDTO(String fixtureId, Team team, List<Player> predicted, List<Player> actual) {
 
-  public SquadPredictionDTO(String fixtureId, Team t, List<Player> players) {
-    this.fixtureId = fixtureId;
-    this.team = t;
-    this.players = players;
-
-  }
-
-
-  public String fixtureId;
-  public Team team;
-  public List<Player> players;
-
-  public static SquadPredictionDTO from(SquadPredictionEntity spe) {
-    return new SquadPredictionDTO(spe.getFixtureId(),spe.getTeam(), spe.getPlayers() );
+  public static SquadPredictionDTO from(SquadPredictionEntity spe, Optional<FixtureLineup> lineup) {
+    if (lineup.isPresent()) {
+      return new SquadPredictionDTO(spe.getFixtureId(), spe.getTeam(), spe.getPlayers(), lineup.get().lineup());
+    } else {
+      return new SquadPredictionDTO(spe.getFixtureId(), spe.getTeam(), spe.getPlayers(), null);
+    }
   }
 }

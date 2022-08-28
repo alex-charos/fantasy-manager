@@ -10,8 +10,10 @@ import gr.charos.fantasymanager.service.LineupService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 @Path("/lineup")
 public class LineupRESTService {
@@ -35,7 +37,9 @@ public class LineupRESTService {
     } else {
       throw new IllegalArgumentException("Invalid team id provided: " + lineupDTO.teamId);
     }
-    lineupService.lineupReceived( new FixtureLineup(fixture.id(), t, lineupDTO.lineup ));
+    lineupService.lineupReceived( new FixtureLineup(fixture.id(), t.id(), lineupDTO.lineup ));
 
   }
+
+
 }

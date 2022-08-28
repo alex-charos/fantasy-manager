@@ -27,14 +27,23 @@ public class FixtureLineupEntity extends PanacheMongoEntity {
   public List<Player> lineup;
 
 
-  public static FixtureLineupEntity of(FixtureLineup lineup) {
-    return new FixtureLineupEntity(lineup.fixtureId(), lineup.team().id(),lineup.lineup());
+  public FixtureLineup toLineup(){
+    return new FixtureLineup(this.fixtureId, this.teamId, this.lineup);
   }
 
+  public static FixtureLineupEntity of(FixtureLineup lineup) {
+    return new FixtureLineupEntity(lineup.fixtureId(), lineup.teamId(),lineup.lineup());
+  }
+
+
   public static FixtureLineupEntity findByFixtureIdAndTeam(String fixtureId, Team team) {
+    return findByFixtureIdAndTeamId(fixtureId, team.id());
+  }
+  public static FixtureLineupEntity findByFixtureIdAndTeamId(String fixtureId, String teamId) {
     Document doc = new Document();
-    doc.put("teamId" , team.id());
+    doc.put("teamId" , teamId);
     doc.put("fixtureId", fixtureId);
     return find(doc).firstResult();
   }
+
 }
